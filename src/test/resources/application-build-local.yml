@@ -1,0 +1,7 @@
+test:
+  hostUrl: "http://localhost"
+
+
+server:
+  port: 0
+
