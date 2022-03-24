@@ -3,7 +3,7 @@ name: Remote Dispatch Component-Test Action Responder
 on: [repository_dispatch]
 
 jobs:
-  ping-pong:
+  run-test:
     runs-on: ubuntu-latest
     steps:
       - name: Event Information
