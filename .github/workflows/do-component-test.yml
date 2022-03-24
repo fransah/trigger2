@@ -19,4 +19,4 @@ jobs:
           token: ${{ secrets.TRIGGER_TEST }}
           repository: ${{ github.event.client_payload.repository }}
           event-type: my-result
-          client-payload: '{"repository": "'"$GITHUB_REPOSITORY"'", "result": "true"}'
+          client-payload: '{"repository": "${{github.repository}}", "result": "true"}'
