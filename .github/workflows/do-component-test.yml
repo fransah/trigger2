@@ -16,7 +16,7 @@ jobs:
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.TRIGGER_TEST }}
+          token: ${{ secrets.TRIGGER_TEST1 }}
           repository: ${{ github.event.client_payload.repository }}
           event-type: my-result
           client-payload: '{"repository": "${{github.repository}}", "result": "true"}'
