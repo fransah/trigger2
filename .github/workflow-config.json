@@ -1,0 +1,13 @@
+{
+  "java-version": "11",
+  "maven-version": "3.6.3",
+  "verify": [
+    {
+      "profile": "component",
+      "runs-on": "ubuntu-latest"
+    }
+  ],
+  "post-deploy": [],
+  "post-release": [
+  ]
+}
