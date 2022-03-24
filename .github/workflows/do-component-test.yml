@@ -1,4 +1,4 @@
-name: Remote Dispatch Component-Test Action Responder
+name: Component-Test Action Responder
 
 on: [repository_dispatch]
 
@@ -7,13 +7,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Event Information
+        if: github.event.action == 'do-component-test'
         run: |
           echo "Event '${{ github.event.action }}' received from '${{ github.event.client_payload.repository }}'"
           echo "Event Type '${{ github.event.event_type }}'"
       - name: Do Tests
+        if: github.event.action == 'do-component-test'
         run: |
           echo "Event Do my very difficult test"
-      - name: Repository Dispatch
+      - name: Send Result Back
+        if: github.event.action == 'do-component-test'
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.TRIGGER_TEST1 }}
