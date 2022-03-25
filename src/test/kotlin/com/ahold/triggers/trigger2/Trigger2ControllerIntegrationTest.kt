@@ -54,4 +54,15 @@ internal class Trigger2ControllerIntegrationTest {
         }
     }
 
+    @Test
+    fun `Should return a trigger object and expect failure` () {
+
+        request When {
+            queryParam("trigger", "Hello")
+            get()
+        } Then {
+            statusCode(400)
+        }
+    }
+
 }

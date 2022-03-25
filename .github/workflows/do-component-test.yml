@@ -28,7 +28,7 @@ jobs:
         run: mvn --batch-mode -DskipTests package
 
       - name: Test
-        run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
+        run: mvn --batch-mode -Dmaven.test.failure.ignore=false verify
 
       - name: Report
         uses: dorny/test-reporter@v1
@@ -52,4 +52,4 @@ jobs:
           token: ${{ secrets.TRIGGER_TEST1 }}
           repository: ${{ github.event.client_payload.repository }}
           event-type: my-result
-          client-payload: '{"repository": "${{github.repository}}", "result": "true", "run-id": "${{github.run_id}}", "resultUrl": "https://github.com/${{github.repository}}/${{github.run_id}}?check_suite_focus=true" }'
+          client-payload: '{"repository": "${{github.repository}}", "result": "true", "run-id": "${{github.run_id}}", "resultUrl": "https://github.com/${{github.repository}}/runs/${{github.run_id}}" }'
