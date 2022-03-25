@@ -39,17 +39,23 @@ jobs:
           reporter: java-junit
           fail-on-error: false
       - name: Dump GitHub context
+        if: always()
         id: github_context_step
         run: echo '${{ toJSON(github) }}'
       - name: Dump job context
+        if: always()
         run: echo '${{ toJSON(job) }}'
       - name: Dump steps context
+        if: always()
         run: echo '${{ toJSON(steps) }}'
       - name: Dump runner context
+        if: always()
         run: echo '${{ toJSON(runner) }}'
       - name: Dump strategy context
+        if: always()
         run: echo '${{ toJSON(strategy) }}'
       - name: Dump matrix context
+        if: always()
         run: echo '${{ toJSON(matrix) }}'
 ###
       - name: Send Result Back
