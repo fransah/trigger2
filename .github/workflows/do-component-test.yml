@@ -11,10 +11,34 @@ jobs:
         run: |
           echo "Event '${{ github.event.action }}' received from '${{ github.event.client_payload.repository }}'"
           echo "Event Type '${{ github.event.event_type }}'"
-      - name: Do Tests
-        if: github.event.action == 'do-component-test'
-        run: |
-          echo "Event Do my very difficult test"
+#      - name: Do Tests
+#        if: github.event.action == 'do-component-test'
+#        run: |
+#          echo "Event Do my very difficult test"
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Build
+        run: mvn --batch-mode -DskipTests package
+
+      - name: Test
+        run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
+
+      - name: Report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Maven Tests
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
+###
       - name: Send Result Back
         if: github.event.action == 'do-component-test'
         uses: peter-evans/repository-dispatch@v2
