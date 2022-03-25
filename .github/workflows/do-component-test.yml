@@ -40,7 +40,7 @@ jobs:
           fail-on-error: false
 ###
       - name: Send Result Back
-        if: github.event.action == 'do-component-test'
+        if: always() && github.event.action == 'do-component-test'
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.TRIGGER_TEST1 }}
