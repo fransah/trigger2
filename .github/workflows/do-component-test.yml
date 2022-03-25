@@ -52,4 +52,4 @@ jobs:
           token: ${{ secrets.TRIGGER_TEST1 }}
           repository: ${{ github.event.client_payload.repository }}
           event-type: my-result
-          client-payload: '{"repository": "${{github.repository}}", "result": "true"}'
+          client-payload: '{"repository": "${{github.repository}}", "result": "true", "run-id": "${{github.run_id}}", "resultUrl": "https://github.com/${{github.repository}}/${{github.run_id}}?check_suite_focus=true" }'
