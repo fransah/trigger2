@@ -38,25 +38,25 @@ jobs:
           path: target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: false
-      - name: Dump GitHub context
-        if: always()
-        id: github_context_step
-        run: echo '${{ toJSON(github) }}'
-      - name: Dump job context
-        if: always()
-        run: echo '${{ toJSON(job) }}'
-      - name: Dump steps context
-        if: always()
-        run: echo '${{ toJSON(steps) }}'
-      - name: Dump runner context
-        if: always()
-        run: echo '${{ toJSON(runner) }}'
-      - name: Dump strategy context
-        if: always()
-        run: echo '${{ toJSON(strategy) }}'
-      - name: Dump matrix context
-        if: always()
-        run: echo '${{ toJSON(matrix) }}'
+#      - name: Dump GitHub context
+#        if: always()
+#        id: github_context_step
+#        run: echo '${{ toJSON(github) }}'
+#      - name: Dump job context
+#        if: always()
+#        run: echo '${{ toJSON(job) }}'
+#      - name: Dump steps context
+#        if: always()
+#        run: echo '${{ toJSON(steps) }}'
+#      - name: Dump runner context
+#        if: always()
+#        run: echo '${{ toJSON(runner) }}'
+#      - name: Dump strategy context
+#        if: always()
+#        run: echo '${{ toJSON(strategy) }}'
+#      - name: Dump matrix context
+#        if: always()
+#        run: echo '${{ toJSON(matrix) }}'
 ###
       - name: Send Result Back
         if: always() && github.event.action == 'do-component-test'
@@ -65,4 +65,4 @@ jobs:
           token: ${{ secrets.TRIGGER_TEST1 }}
           repository: ${{ github.event.client_payload.repository }}
           event-type: my-result
-          client-payload: '{"repository": "${{github.repository}}", "result": "true", "run-id": "${{github.run_id}}", "resultUrl": "https://github.com/${{github.repository}}/runs/${{github.run_id}}" }'
+          client-payload: '{"repository": "${{github.repository}}", "result": "${{job.status}}",  "resultUrl": "https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}" }'
