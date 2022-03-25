@@ -38,12 +38,6 @@ jobs:
           path: target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: false
-      - name: View generated stuff
-        run: ls -a
-      - name: View Target dir stuff
-        run: |
-          cd target
-          ls -a
 ###
       - name: Send Result Back
         if: github.event.action == 'do-component-test'
