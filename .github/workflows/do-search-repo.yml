@@ -6,6 +6,7 @@ on:
 
 jobs:
   search-text:
+    name: "Search for: '${{ github.event.client_payload.search-string }}'"
     runs-on: ubuntu-latest
     steps:
       - name: Event Information
@@ -35,4 +36,4 @@ jobs:
           token: ${{ secrets.TRIGGER_TEST1 }}
           repository: ${{ github.event.client_payload.repository }}
           event-type: my-search-result
-          client-payload: '{"repository": "${{github.repository}}", "result": "${{job.status}}",  "foundResults": "${{ steps.search.outputs.search-output }}" }'
+          client-payload: '{"repository": "${{github.repository}}", "result": "${{job.status}}",  "foundResults": "${{ steps.search.outputs.search-output }}", "search-string": "${{ github.event.client_payload.search-string }}" }'

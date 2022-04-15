@@ -73,6 +73,36 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<!-- Profiles are generally configured by the pipeline, when deploying to environments or reaching certain test stages -->
+		<profile>
+			<!-- When reaching component test stage, disable the other JUnit categories -->
+			<id>component</id>
+			<properties>
+				<skipTests>true</skipTests>
+				<skipITs>false</skipITs>
+				<excludedGroups>
+					LoadTests,
+					E2ETests
+				</excludedGroups>
+				<stage>component</stage>
+			</properties>
+		</profile>
+		<profile>
+			<!-- When reaching component test stage, disable the other JUnit categories -->
+			<id>integration</id>
+			<properties>
+				<skipTests>true</skipTests>
+				<skipITs>false</skipITs>
+				<excludedGroups>
+					LoadTests,
+					E2ETests
+				</excludedGroups>
+				<stage>integration</stage>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
 		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
 		<testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
@@ -100,6 +130,47 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+			<!-- Configuration for unit tests -->
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-surefire-plugin</artifactId>
+			<configuration>
+				<skipTests>${skipTests}</skipTests>
+				<useSystemClassLoader>false</useSystemClassLoader>
+				<perCoreThreadCount>false</perCoreThreadCount>
+				<reuseForks>true</reuseForks>
+				<threadCount>20</threadCount>
+				<runOrder>random</runOrder>
+				<includes>
+					<include>**/*Test</include>
+					<include>**/*Spec</include>
+				</includes>
+				<excludes>
+					<exclude>**/*ComponentTest</exclude>
+					<exclude>**/*IntegrationTest</exclude>
+				</excludes>
+			</configuration>
+		</plugin>
+		<plugin>
+			<!-- For integration tests, JUnit categories are decided by the active profiles -->
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-failsafe-plugin</artifactId>
+			<configuration>
+				<failIfNoTests>false</failIfNoTests>
+				<skipTests>${skipITs}</skipTests>
+				<skipITs>${skipITs}</skipITs>
+				<excludedGroups>${excludedGroups}</excludedGroups>
+				<runOrder>random</runOrder>
+				<excludes>
+					<exclude>**/*Spec</exclude>
+				</excludes>
+				<includes>
+					<include>**/ChuckNorris</include>
+					<include>**/*ComponentTest</include>
+					<include>**/*IntegrationTest</include>
+				</includes>
+			</configuration>
+		</plugin>
 		</plugins>
 	</build>
 

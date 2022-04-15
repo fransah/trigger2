@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Event Information
-        #if: github.event.action == 'do-component-test'
         run: |
           echo "Event '${{ github.event.action }}' received from '${{ github.event.client_payload.repository }}'"
           echo "Event Type '${{ github.event.event_type }}'"
@@ -27,19 +26,27 @@ jobs:
         run: mvn --batch-mode -DskipTests package
 
       - name: Test
-        run: mvn --batch-mode -Dmaven.test.failure.ignore=false verify
+        run: mvn --no-transfer-progress -Dmaven.test.failure.ignore=false verify -P ${{ github.event.client_payload.type-test }}
 
-      - name: Report
+      - name: ReportSurefire
+        if: github.event.client_payload.type-test == 'all'
         uses: dorny/test-reporter@v1
-        if: always()
         with:
-          name: Maven Tests
-          path: target/surefire-reports/*.xml
+          name: Maven Junit Tests
+          path: target/surefire-reports/*Test.xml
+          reporter: java-junit
+          fail-on-error: false
+
+      - name: ReportFailsafe
+        uses: dorny/test-reporter@v1
+        with:
+          name: Maven Component/Integration Tests
+          path: target/failsafe-reports/*Test.xml
           reporter: java-junit
           fail-on-error: false
 
       - name: Send Result Back
-        if: always() #&& github.event.action == 'do-component-test'
+        if: always()
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.TRIGGER_TEST1 }}
